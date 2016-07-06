@@ -1,1 +1,4 @@
-#:G:\Github\kae_dotnetcore\0.BFL\src\KJFramework\KJFramework.xproj
+#:G:\Github\kae_dotnetcore\test\KJFramework.Messages.UnitTests\KJFramework.Messages.UnitTests.xproj
+G:\Github\kae_dotnetcore\test\KJFramework.Messages.UnitTests\KJFramework.Messages.UnitTests.xproj|G:\Github\kae_dotnetcore\src\0.BFL\KJFramework\KJFramework.xproj
+G:\Github\kae_dotnetcore\test\KJFramework.Messages.UnitTests\KJFramework.Messages.UnitTests.xproj|G:\Github\kae_dotnetcore\src\0.BFL\KJFramework.Messages\KJFramework.Messages.xproj
+G:\Github\kae_dotnetcore\src\0.BFL\KJFramework.Messages\KJFramework.Messages.xproj|G:\Github\kae_dotnetcore\src\0.BFL\KJFramework\KJFramework.xproj

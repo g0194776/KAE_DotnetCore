@@ -3,14 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{20FBAA28-24C4-4D9F-B5D6-7D213760FB38}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8012BD58-21A9-4DEE-9F02-E685B82A0FC8}"
 	ProjectSection(SolutionItems) = preProject
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "KJFramework", "0.BFL\src\KJFramework\KJFramework.xproj", "{9CB676E6-7530-49C9-A0DA-78B71B30C948}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "KJFramework", "src\0.BFL\KJFramework\KJFramework.xproj", "{9CB676E6-7530-49C9-A0DA-78B71B30C948}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "KJFramework.Messages", "src\0.BFL\KJFramework.Messages\KJFramework.Messages.xproj", "{7C54DF10-E05E-4673-BEDB-45E0E6831AAB}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "KJFramework.Messages.UnitTests", "test\KJFramework.Messages.UnitTests\KJFramework.Messages.UnitTests.xproj", "{50BD82A3-E1A6-4361-BD19-FFDB62E6387F}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ConsoleApp1", "src\0.BFL\ConsoleApp1\ConsoleApp1.xproj", "{00023D54-B179-458C-996F-98981D3BF89F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,11 +26,20 @@ Global
 		{9CB676E6-7530-49C9-A0DA-78B71B30C948}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CB676E6-7530-49C9-A0DA-78B71B30C948}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CB676E6-7530-49C9-A0DA-78B71B30C948}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C54DF10-E05E-4673-BEDB-45E0E6831AAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C54DF10-E05E-4673-BEDB-45E0E6831AAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C54DF10-E05E-4673-BEDB-45E0E6831AAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C54DF10-E05E-4673-BEDB-45E0E6831AAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50BD82A3-E1A6-4361-BD19-FFDB62E6387F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50BD82A3-E1A6-4361-BD19-FFDB62E6387F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50BD82A3-E1A6-4361-BD19-FFDB62E6387F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50BD82A3-E1A6-4361-BD19-FFDB62E6387F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00023D54-B179-458C-996F-98981D3BF89F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00023D54-B179-458C-996F-98981D3BF89F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00023D54-B179-458C-996F-98981D3BF89F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00023D54-B179-458C-996F-98981D3BF89F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{9CB676E6-7530-49C9-A0DA-78B71B30C948} = {20FBAA28-24C4-4D9F-B5D6-7D213760FB38}
 	EndGlobalSection
 EndGlobal
