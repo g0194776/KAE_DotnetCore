@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0-*",
+  "compilationOptions": { "allowUnsafe": true },
+
+  "dependencies": {
+    "KJFramework": "1.0.0-*",
+    "KJFramework.Messages": "1.0.0-*",
+    "Microsoft.Extensions.Caching.Abstractions": "1.0.0",
+    "Microsoft.Extensions.Configuration.Binder": "1.0.0",
+    "NETStandard.Library": "1.6.0",
+    "Newtonsoft.Json": "9.0.1",
+    "System.Collections.Specialized": "4.0.1",
+    "System.IO.Pipes": "4.0.0",
+    "System.Net.Requests": "4.0.11"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}
