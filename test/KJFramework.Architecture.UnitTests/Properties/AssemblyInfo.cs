@@ -7,9 +7,8 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("KJFramework.Net.Transaction")]
+[assembly: AssemblyProduct("KJFramework.Architecture.UnitTests")]
 [assembly: AssemblyTrademark("")]
-[assembly: InternalsVisibleTo("KJFramework.ApplicationEngine")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
@@ -17,4 +16,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b933ba24-7fdc-499e-b840-e9464edc2066")]
+[assembly: Guid("a7e12528-8f28-4701-9c0b-e68f946e307f")]

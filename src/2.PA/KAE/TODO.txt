@@ -1,0 +1,290 @@
+﻿7月25日进度
+------------------------------------------------
+1. 初步完成了KAE宿主跟RRCS之间的注册流程
+2. 初步完成了KAE宿主跟RRCS之间的注销流程
+3. 为KAE宿主跟RRCS之间的注册机制增加了“注册来源字段”
+4. 初步完成了ApplicationDynamicObject和真实Application之间的协同调用
+5. 更新了KAE宿主进程启动时使用随机网络资源的分配方式
+6. 修改了从HostChannel到ConnectionAgent中对于Tag字段值的使用规则
+
+
+What's the next:
+------------------------------------------------
+1. 完成LightPerformanceCounter的编写, 并将此应用于KAEHost内部      √
+2. 针对RRCS内部通过crc从数据库获取APP信息的场景做进程内缓存      √
+3. 重写SystemWorker的ConfigurationProxy类，并支持接口传入callback函数      √
+4. 为CSN增加配置信息变化的Publisher      √
+5. 重写SystemConnectionPool，为其增加Multiple Socket Connection的支持      √
+
+
+
+
+8月11日进度
+------------------------------------------------
+1. 为CSN增加配置信息变化的Publisher
+2. 完成LightPerformanceCounter的编写, 并将此应用于KAEHost内部
+3. 创建了一个VS插件，用于日后更加便利的使用KAE
+4. 重写SystemWorker的ConfigurationProxy类，并支持接口传入callback函数
+
+	其实我们的初衷很简单，就是希望KAE宿主	能够HANDLE所有的网络资源。我们不期待任何的KPP能拥有或者创建属于自己的网络资源。介于此，
+	我们特地为KAEHost和KPP之间打通了一个隧道，好让来自KPP里面获取配置信息的方法调用能够路由到
+	默认应用程序域(Default AppDomain)中的代码块上，这样一来我们就没必要让每个KPP都与CSN来一次亲密的接触。
+
+	这样做的好处是显而易见的，因为我们只需要在KAE宿主中做好对于CSN服务的连接管理，反向更新订阅就够了。
+	从KPP的加载速度上来讲，这一点也是至关重要的。我们特地为SystemWorker设计了一个精简的内部初始化方法“InitializeForKPP”。
+	正式由于此方法，在KPP进行初始化的时候没必要再从CSN拿一遍所有的配置信息。这之间节省了连接的开销，通信的开销。
+	从灵活度来讲，这样的做法会让底层的结构更加清晰，甚至于在KAE宿主级别可以定制这个进程内部所有KPP的通信基础资源。
+
+
+
+	
+What's the next:
+------------------------------------------------
+1. 重写SystemConnectionPool，为其增加Multiple Socket Connection的支持      √
+2. 开始着手于设计动态负载的分发模块      √
+3. 完善并走通从APP到KAEHost的Send RSP流程      √
+4. 开始开发基于KAE的VS Tools
+
+
+
+
+
+
+
+
+
+9月12日进度
+------------------------------------------------
+1. 重写了SystemConnectionPool，为其增加Multiple Socket Connection的支持
+2. 初步完成了KAE宿主对于获取远程灰度升级策略脚本的支持
+3. 改造SystemWorker让其支持设置灰度升级脚本的功能
+4. 为KAE的CSN配置项加入了灰度升级的配置
+
+
+What's the next:
+------------------------------------------------
+1. KAE的包裹清单(用于一次性打包装配一个崭新的KAE宿主)
+2. SystemWorker支持在创建网络事务的时候传入上下文的资源信息
+2. 开发基于KAE的VS Tools
+
+
+
+
+10月22日进度
+------------------------------------------------
+1. 重构了KAE宿主的构造函数用于支持装配清单的设计
+2. 为KAE宿主内部添加了装配清单功能的支持，并定义KAE宿主只能使用一种方式进行初始化操作
+3. 为KAE宿主内部增加了相关日志输出
+4. 为ITracing接口增加了DebugInfo方法，用于打印日志的同时将内容输出到Console控制台上
+5. 增加了KAE信息站的项目(KAE Information Station)
+6. 为KAE信息站规定了第一个用于查询KPP详细信息的HTTP级别RESTful风格接口
+
+
+
+
+
+12月15日进度
+------------------------------------------------
+1. 移除了Application的abstract定义，将其InnerInitialize方法改为virtual的。
+    这样的做法主要是为了让使用者更加轻松，因为如果使用者没有特殊需求的话，他完全可以不用创建一个
+	新的Application派生类而仅仅是为了重写InnerInitialize方法。
+	当然，将Application的abstract定义移除后，内部做了些特殊的支持。当Application Main File内部不包含
+	任何Application后则使用基础类型进行替换。
+2. 优化了MetadataMessageTransaction.SendResponse方法，这直接的使得使用者再也不用构造一个MessageIdentity作为
+	RSP消息0x00位置的值了，在内部MetadataMessageTransaction进行了优化，用于自动计算RSP场景下的MessageIdentity
+3. 为KPPDataStructure增加SetSectionField<T>方法
+
+
+
+
+What's the next:
+------------------------------------------------
+1. 在讲一致性圆环的地址信息传入指定的Application后，这个数据应该被SystemWorker所使用到。
+	这就意味着不论是HOST还是APP都应该使用SystemWorker进行指定远程APP的请求发起。而SystemWorker
+	内部使用的网络信息应该是初始化并且注入更新的。
+2. 完善更多的测试用例
+3. 改造SystemWorker内部的实现，将高度组合的方案替换为加工模式。即SystemWorker近用于内部能力和获取已初始化好的TransactionProxy
+	伪代码看起来如下：
+			IMessageTransactionProxy<T> proxy = SystemWorker.GetTransactionProxy(Protocol.BaseMessage);
+			IMessageTransaction<T> transaction = proxy.Create[Oneway]Transaction(new Protocol(6,6,6), [RESOURCE URL]);
+4. 完成KAE Official Application的搭建
+
+
+
+
+
+
+12月17日进度
+------------------------------------------------
+1. 改造SystemWorker内部的实现，将高度组合的方案替换为加工模式。即SystemWorker仅用于内部能力和获取已初始化好的TransactionProxy
+	伪代码看起来如下：
+			IMessageTransactionProxy<T> proxy = SystemWorker.GetTransactionProxy(Protocol.BaseMessage);
+			IMessageTransaction<T> transaction = proxy.Create[Oneway]Transaction(new Protocol(6,6,6), [RESOURCE URL]);
+2. 将KatamaRing应用于SystemWorker中。现在我们已经将SystemWorker变为纯静态的类型，并且在KAE应用内部的Processor中可以使用SystemWorker
+	来发起一个向远程APP的请求了
+3. 抽象了IProtocolStackContainer, 用于内部管理已注册的网络协议栈
+4. 移除了KAE Application内部对于DynamicDomainComponent中一些无用处方法的依赖
+5. 从KAE的分支中移除了KJFramework.ServiceModel项目，这个项目本身就是WCF的学习作品，以后也不会再有升级打算了
+6. 从KAE的分支中移除了KJFramework.Net.Cloud项目，这个项目的概念已经不适用于KAE了
+7. 提供新的KAEResourceUri类型，这个类型将会被用于KAE判断路由灰度策略，这个Uri是可以让使用者来填写的
+8. 为KatamaRing提供了更好的外部暴露方法
+9. 完全重写了NetworkCluster的实现
+10. 翻新了FailMessageTransaction的内部实现，剔除无用的代码
+11. 深度重构了TransactionManager
+12. 深度重构了ConnectionPool
+13. 深度重构了网络协议栈的概念(Protocol Stack)，现在，网络协议栈不再是泛型的类型了
+14. 剔除了KJFramework.Dynamic项目中Visitor的技术方案，用于让KJFramework.Dynamic更专注于动态组件技术
+15. 全局解决方案的适应性修改
+
+
+
+What's the next:
+------------------------------------------------
+1. 完善更多的测试用例
+2. 完成KAE Official Application的搭建
+
+
+
+
+
+12月18日进度
+------------------------------------------------
+#Updated local CSN database.
+#Completely removed tunnel conception from "KJFramework.Dynamic" project.
+#Added a new tunnel property to KAE's application class.
+#Adjusted the calling position of InitializeCore method in SystemWorker.
+#Added a new transfer field(Transaction Expire Time) for all kinds of network transaction.
+#The business message transaction can automatically calculate "MessageIdentity.DetailId" in the "SendResponse" method now.
+
+
+What's the next:
+------------------------------------------------
+1. 完善更多的测试用例
+2. 完成KAE Official Application的搭建
+
+
+
+
+
+
+
+2015-1-13进度
+------------------------------------------------
+1. 现在KAEHost在接收到RRCS返回的一致性圆环信息后将会按照支持的网络协议进行拆分并分别在不同的NetworkCluster中生效
+2. 修改了DynamicDomainComponentFinder中查找KAE Application的BUG
+3. 做了一些适应性的修改
+
+
+
+
+
+
+2015-6-19进度
+------------------------------------------------
+1. 创建IIRemoteProtocolRegister接口，用于接入ZooKeeper
+2. KAE 目前已经更改基于RRCS的方案，新的方案是弃用掉RRCS并将KAE HOST直接与ZooKeeper进行通信
+3. 在KAE软负载期间弃用KAE APP版本号的概念，转而使用基于P/S/D以及应用等级和协议类型这5个字段组成的字符串进行负载
+4. 软负载圆环目前除了按照应用等级之外，还会按照业务协议以及通信协议类型来区分。也就是说一个负载圆环需要具备3单独的条件。
+
+
+
+
+
+
+
+2015-6-20进度
+------------------------------------------------
+1. 将通信时传递的、期望请求的APP类型下放到0x05字段进行存放，同时修改了KAEHost用于支持当此字段不传递的时候默认使用Stable版本的KAE APP
+2. 统一了Protocols和MessageIdentity类型的使用场景, Protocols主要用于内部传递而MessageIdentity主要用于网络通信上使用
+3. 为NetworkCluster加入特殊逻辑，当能用PROTOCOL换出一致性HASH圆环，并且该圆环是空的时候则会进行特殊的错误提示
+4. 为协议栈容器(IProtocolStackContainer)加入获取所支持的默认网络协议栈方法
+5. 提供ProtocolResurce的默认实现，并且加入数据变更的通知事件
+6. 为远程协议资源管理器加入数据变更通知事件
+7. 移除了MetadataTransaction.SendResponse中的一个BUG
+
+
+
+
+
+
+2015-6-21进度
+------------------------------------------------
+1. 优化MessageTransactionProxy内部逻辑。以后只要使用MessageTransactionProxy创建出来的网络事务均不需要再在网络的REQ消息中
+手动的添加MessageIdentity字段。这个字段将会在Transaction.SendRequest时自动附加上去！
+
+
+
+
+
+2015-6-22进度
+------------------------------------------------
+1. 重新梳理了KAE APP的存放路径。需要上架的APP将会存放在install-apps目录中，而临时文件将会存放在temp-files目录中
+2. 为DefaultApplicationFinder提取出单一APP的解析实现方法，为后续的APP在线下载和安装做准备
+3. 加入KAE状态记录器对象，用于记录最后N条KAE宿主的日志信息，将会被用在今后状态跟踪和平台监控上
+4. 为KAE宿主初步实现了下架KAE APP的方法
+5.现在当KAE APP通信地址有变更时，我们仅会通知KAE宿主中那些对这个变更感兴趣的KAE APP，而不是全局把所有的KAE APP都广播了
+6. 重命名IKAEHostProxy为IKAEResourceProxy
+7. 为IProtocolResource提供反注册方法(Unregister)
+8. 在SystemWorker的初始化方法中提供传入IKAEResourceProxy的支持，为后续KAE Client的支持做准备
+
+
+
+
+
+
+2015-8-11进度
+------------------------------------------------
+1. 深度重构了KAEHost内部的逻辑
+		#将4层结构的DIC放到ApplicationDynamicObject中去
+		#将KPP内部结构初始化的工作移到ApplicationDynamicObject中去
+2. 在KAE网络层基础信令中加入KPP的全局唯一ID字段，用于减轻KAEHost内部的复杂逻辑
+	这里等于用网络传输的基础数据加了16个字节的代价来优化内部处理结构]
+	当然，在ZooKeeper中的节点名称以及一致性HASH圆环中也有这个值的加入细节改动
+3. 引入KAE System Command接口，开始为后续KAEHost支持执行远程的系统命令做准备
+4. 加入KAEHostAppManager类，用于支持在多线程的环境中提供KAE宿主内部APP的管理和功能调用工作
+
+
+
+
+
+
+2015-8-13进度
+------------------------------------------------
+1. 为KAE宿主加入了KAECommandsExecutor类，用于执行系统命令
+2. 为KAE宿主初步实现了安装KPP以及卸载KPP的方法
+3. 重新梳理KAE宿主所使用到的ZooKeeper路径，统一规划到/kae目录下，并下设/protocols和/hosting子目录
+4. 在KAE宿主初始化时会将自己机器的名称加入到远程ZooKeeper的/kae/hosting子目录下，用于今后VS插件以及监控平台的发现以及后续通信
+5. RemotingApplicationDownloader向外部暴露下载单一文件的方法供KAE系统命令使用
+6. 改变KAEHostAppManager类执行策略，想外开放新的Exists方法用于检查指定KPP是否已经被上架
+7. 加入部分新的KAE错误码
+	
+
+
+
+
+
+2015-8-14进度
+------------------------------------------------
+1. 重新启用CSN的APP作为KAE的系统APP之一
+2. 修改所有已经实现的KAE APP，内部的代码实现无需可以完成同步过程，整体KAE框架在KAE系统命令的执行入口会进行保证
+3. 完成KAECommandExecutor与KAEHost的对接工作
+4. 完成KAEHost对于系统命令的判断以及执行流程
+5. 添加了部分KAE错误码
+6. 在卸载KAE应用的系统命令中加入了同时移除远端ZK中注册的信令集功能
+7. 在安装KAE应用的系统命令中加入了同时添加远端ZK中注册的信令集功能
+
+
+
+
+
+
+2015-8-31进度
+------------------------------------------------
+1. 加入更新KPP的系统指令
+		统一了系统级别的控制指令前缀: SYS_CTRL
+		统一了系统级别获取信息的指令前缀: SYS_INFO
+2. 加入了获取KPP信息的KAE系统命令
+3. 将KJFramework.Net.Channels合并到KJFramework.Net项目中，用于提供基础网络层并且让框架设计更加紧凑以及合理
+4. 将KJFramework.Cache合并到KJFramework项目中，用于提供统一的基础层并且让框架设计更加紧凑以及合理
+5. 为KAE APP提供了延迟停止方法DelayStop用于在关闭KAE APP时能够优雅地处理其内部已经接收到的请求信息
+6. 为KAE APP内部计算的UnRspCount逻辑加入对于网络Oneway消息的判断
