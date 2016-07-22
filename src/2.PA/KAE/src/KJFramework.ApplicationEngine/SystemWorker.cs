@@ -1,5 +1,4 @@
 ﻿using KJFramework.ApplicationEngine.Clusters;
-using KJFramework.ApplicationEngine.Configurations.Settings;
 using KJFramework.ApplicationEngine.Eums;
 using KJFramework.ApplicationEngine.Proxies;
 using KJFramework.Messages.Contracts;
@@ -18,9 +17,13 @@ using KJFramework.Net.Transaction.ValueStored;
 using KJFramework.Tracing;
 using System;
 using System.Collections.Generic;
+using KJFramework.Configurations;
+using KJFramework.Configurations.Settings;
 using KJFramework.Net;
 using KJFramework.Net.Configurations;
 using KJFramework.Net.Identities;
+using KJFramework.Net.Transaction;
+using KJFramework.Proxy;
 
 namespace KJFramework.ApplicationEngine
 {
@@ -31,6 +34,7 @@ namespace KJFramework.ApplicationEngine
     {
         #region Members
 
+        private static ITracing _tracing;
         private static bool _isInitialized;
         private static IKAEResourceProxy _hostProxy;
         private static INetworkCluster<BaseMessage> _clsuter;
@@ -42,7 +46,6 @@ namespace KJFramework.ApplicationEngine
         private static ConnectionPool<MetadataContainer> _metadataConnectionPool; 
         private static IMessageTransactionProxy<BaseMessage> _baseMessageTransactionProxy; 
         private static IMessageTransactionProxy<MetadataContainer> _metadataMessageTransactionProxy;
-        private static readonly ITracing _tracing = TracingManager.GetTracing(typeof(SystemWorker));
 
         #endregion
 
@@ -91,6 +94,9 @@ namespace KJFramework.ApplicationEngine
             if (proxy == null) proxy = new KAEHostResourceProxy();
             if (string.IsNullOrEmpty(role)) throw new ArgumentNullException(nameof(role));
             if (configurationProxy == null) throw new ArgumentNullException(nameof(configurationProxy));
+            SystemConfigurations.Initialize(role, setting, configurationProxy);
+            _tracing = TracingManager.GetTracing(typeof(SystemWorker));;
+            TransactionGlobal.Initialize();
             _configurationProxy = configurationProxy;
             _hostProxy = proxy;
             TracingManager.NotificationHandler = notificationHandler ?? new RemoteLogProxy();
@@ -116,6 +122,9 @@ namespace KJFramework.ApplicationEngine
             _hostProxy = proxy;
             _appUniqueId = appUniqueId;
             _configurationProxy = new KPPConfigurationProxy(proxy);
+            SystemConfigurations.Initialize(role, RemoteConfigurationSetting.Default, _configurationProxy);
+            _tracing = TracingManager.GetTracing(typeof(SystemWorker)); ;
+            TransactionGlobal.Initialize();
             //Regist("LGS", new LGSProtocolStack());
             TracingManager.NotificationHandler = new RemoteLogProxy();
             InitializeCore(role);

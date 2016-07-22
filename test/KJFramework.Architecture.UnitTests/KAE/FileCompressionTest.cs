@@ -39,8 +39,18 @@ namespace KJFramework.Architecture.UnitTest.KAE
             Assert.IsTrue(decompressedFiles.Count == 2);
             Assert.IsTrue(decompressedFiles.ContainsKey("1.txt"));
             Assert.IsTrue(decompressedFiles.ContainsKey("2.txt"));
-            Assert.IsTrue(decompressedFiles["1.txt"].Length == 1024);
-            Assert.IsTrue(decompressedFiles["2.txt"].Length == 1024);
+            char[] content1 = new string('*', 1024).ToCharArray();
+            content1[0] = 'z';
+            content1[content1.Length - 1] = 'z';
+
+
+            char[] content2 = new string('*', 1024).ToCharArray();
+            content2[0] = 'y';
+            content2[content2.Length - 1] = 'y';
+
+
+            Assert.IsTrue(Encoding.UTF8.GetString(decompressedFiles["1.txt"]) == new string(content1));
+            Assert.IsTrue(Encoding.UTF8.GetString(decompressedFiles["2.txt"]) == new string(content2));
 
             Directory.Delete(tmpPath, true);
         }
@@ -51,17 +61,27 @@ namespace KJFramework.Architecture.UnitTest.KAE
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             if (!File.Exists(Path.Combine(path, "1.txt")))
             {
-                using (StreamWriter writer = new StreamWriter(new FileStream(Path.Combine(path, "1.txt"), FileMode.CreateNew), Encoding.UTF8))
+                using (FileStream writer = new FileStream(Path.Combine(path, "1.txt"), FileMode.CreateNew))
                 {
-                    writer.Write(new string('*', 1024));
+                    char[] content = new string('*', 1024).ToCharArray();
+                    content[0] = 'z';
+                    content[content.Length - 1] = 'z';
+                    string tmpStr = new string(content);
+                    byte[] tmpData = Encoding.UTF8.GetBytes(tmpStr);
+                    writer.Write(tmpData, 0, tmpData.Length);
                     writer.Flush();
                 }
             }
             if (!File.Exists(Path.Combine(path, "2.txt")))
             {
-                using (StreamWriter writer = new StreamWriter(new FileStream(Path.Combine(path, "2.txt"), FileMode.CreateNew), Encoding.UTF8))
+                using (FileStream writer = new FileStream(Path.Combine(path, "2.txt"), FileMode.CreateNew))
                 {
-                    writer.Write(new string('*', 1024));
+                    char[] content = new string('*', 1024).ToCharArray();
+                    content[0] = 'y';
+                    content[content.Length - 1] = 'y';
+                    string tmpStr = new string(content);
+                    byte[] tmpData = Encoding.UTF8.GetBytes(tmpStr);
+                    writer.Write(tmpData, 0, tmpData.Length);
                     writer.Flush();
                 }
             }

@@ -1,4 +1,4 @@
-﻿namespace KJFramework.ApplicationEngine.Configurations.Settings
+﻿namespace KJFramework.Configurations.Settings
 {
     /// <summary>
     ///     远程配置设置
@@ -55,6 +55,31 @@
         ///     默认配置集
         /// </summary>
         public static RemoteConfigurationSetting Default { get; set; }
+
+        #endregion
+
+        #region Methods.
+
+        /// <summary>
+        ///     判断是否定制了指定配置项
+        /// </summary>
+        /// <param name="key">配置项名称</param>
+        /// <returns>返回一个值，这个值标示了是否已经被定制的标记</returns>
+        public bool HasCustomizedKey(string key)
+        {
+            switch (key.ToLower())
+            {
+                case "kjframework.net":
+                    return IsCustomize_KJFramework_Net_Config;
+                case "kjframework.net.channels":
+                    return IsCustomize_KJFramework_Net_Channels_Config;
+                case "kjframework.net.transaction":
+                    return IsCustomize_KJFramework_Net_Transaction_Config;
+                case "kjframework-family":
+                    return IsCustomizeKJFrameworkConfig;
+            }
+            return false;
+        }
 
         #endregion
     }

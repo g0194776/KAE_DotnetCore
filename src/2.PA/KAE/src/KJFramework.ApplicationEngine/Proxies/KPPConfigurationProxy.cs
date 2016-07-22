@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using KJFramework.EventArgs;
+using KJFramework.Proxy;
 using KJFramework.Tracing;
 
 namespace KJFramework.ApplicationEngine.Proxies

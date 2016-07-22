@@ -19,7 +19,7 @@ namespace KJFramework.Net.Transaction.Managers
         /// </summary>
         /// <param name="comparer">比较器</param>
         public MessageTransactionManager(IEqualityComparer<TransactionIdentity> comparer)
-            : this(comparer, Global.TransactionCheckInterval)
+            : this(comparer, TransactionGlobal.TransactionCheckInterval)
         {
         }
 
@@ -56,7 +56,7 @@ namespace KJFramework.Net.Transaction.Managers
         public BusinessMessageTransaction Create(TransactionIdentity identity, IMessageTransportChannel<BaseMessage> channel)
         {
             if (channel == null) throw new ArgumentNullException(nameof(channel));
-            BusinessMessageTransaction transaction = new BusinessMessageTransaction(new Lease(DateTime.Now.Add(Global.TransactionTimeout)), channel) { TransactionManager = this, Identity = identity };
+            BusinessMessageTransaction transaction = new BusinessMessageTransaction(new Lease(DateTime.Now.Add(TransactionGlobal.TransactionTimeout)), channel) { TransactionManager = this, Identity = identity };
             return (Add(identity, transaction) ? transaction : null);
         }
 

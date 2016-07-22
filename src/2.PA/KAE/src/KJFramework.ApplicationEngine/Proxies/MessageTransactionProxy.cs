@@ -82,7 +82,7 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <returns>返回新的事务</returns>
         public IMessageTransaction<TMessage> CreateTransaction(string appName, Protocols target, string version = "latest", KAEResourceUri resourceUri = null, NetworkCommunicationTypes communicationType = NetworkCommunicationTypes.Dulplex, string protocolSelf = null)
         {
-            return CreateTransaction(appName, target, Global.TransactionTimeout, version, resourceUri, communicationType, protocolSelf);
+            return CreateTransaction(appName, target, TransactionGlobal.TransactionTimeout, version, resourceUri, communicationType, protocolSelf);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <returns>返回新的事务</returns>
         public IMessageTransaction<TMessage> CreateTransaction(string appName, Protocols target, long balanceFlag, string version = "latest", KAEResourceUri resourceUri = null, NetworkCommunicationTypes communicationType = NetworkCommunicationTypes.Dulplex, string protocolSelf = null)
         {
-            return CreateTransaction(appName, target, Global.TransactionTimeout, balanceFlag, version, resourceUri, communicationType, protocolSelf);
+            return CreateTransaction(appName, target, TransactionGlobal.TransactionTimeout, balanceFlag, version, resourceUri, communicationType, protocolSelf);
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <returns>返回新的事务</returns>
         public IMessageTransaction<TMessage> CreateTransaction(string appName, Protocols target, string balanceFlag, string version = "latest", KAEResourceUri resourceUri = null, NetworkCommunicationTypes communicationType = NetworkCommunicationTypes.Dulplex, string protocolSelf = null)
         {
-            return CreateTransaction(appName, target, Global.TransactionTimeout, balanceFlag.GetHashCode(), version, resourceUri, communicationType, protocolSelf);
+            return CreateTransaction(appName, target, TransactionGlobal.TransactionTimeout, balanceFlag.GetHashCode(), version, resourceUri, communicationType, protocolSelf);
         }
 
         /// <summary>
@@ -260,7 +260,7 @@ namespace KJFramework.ApplicationEngine.Proxies
         /// <returns>返回新的事务</returns>
         public IMessageTransaction<TMessage> CreateTransaction(string appName, Protocols target, Guid balanceFlag, string version = "latest", KAEResourceUri resourceUri = null, NetworkCommunicationTypes communicationType = NetworkCommunicationTypes.Dulplex, string protocolSelf = null)
         {
-            return CreateTransaction(appName, target, Global.TransactionTimeout, balanceFlag.GetHashCode(), version, resourceUri, communicationType, protocolSelf);
+            return CreateTransaction(appName, target, TransactionGlobal.TransactionTimeout, balanceFlag.GetHashCode(), version, resourceUri, communicationType, protocolSelf);
         }
 
         /// <summary>

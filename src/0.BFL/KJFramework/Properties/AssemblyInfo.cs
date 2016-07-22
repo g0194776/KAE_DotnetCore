@@ -11,6 +11,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly:InternalsVisibleTo("KJFramework.Net")]
 [assembly:InternalsVisibleTo("KJFramework.Net.Transaction")]
+[assembly:InternalsVisibleTo("KJFramework.Architecture.UnitTests")]
+[assembly:InternalsVisibleTo("KJFramework.ApplicationEngine")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from

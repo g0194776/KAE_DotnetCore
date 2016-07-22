@@ -2,6 +2,7 @@
 using KJFramework.Attribute;
 using KJFramework.Net.Transaction.Enums;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace KJFramework.Net.Transaction.Configurations
 {
@@ -15,31 +16,26 @@ namespace KJFramework.Net.Transaction.Configurations
         /// <summary>
         ///     事务超时时间
         /// </summary>
-        [CustomerField("TransactionTimeout")]
         public TimeSpan TransactionTimeout { get; set; }
 
         /// <summary>
         ///    事务超时检查时间间隔
         /// </summary>
-        [CustomerField("TransactionCheckInterval")]
         public int TransactionCheckInterval { get; set; }
 
         /// <summary>
         ///    最小连接数(在相同的远程终结点地址情况下)
         /// </summary>
-        [CustomerField("MinimumConnectionCount")]
         public int MinimumConnectionCount { get; set; }
 
         /// <summary>
         ///    最大连接数(在相同的远程终结点地址情况下)
         /// </summary>
-        [CustomerField("MaximumConnectionCount")]
         public int MaximumConnectionCount { get; set; }
-
+        
         /// <summary>
         ///    并行网络连接的分发策略
         /// </summary>
-        [CustomerField("ConnectionLoadBalanceStrategy")]
         public ConnectionLoadBalanceStrategies ConnectionLoadBalanceStrategy { get; set; }
 
         #endregion
@@ -54,7 +50,10 @@ namespace KJFramework.Net.Transaction.Configurations
         /// <returns>返回一个是否解析成功的标识</returns>
         public static bool TryParse(IConfiguration configuration, out SettingConfiguration settings)
         {
-            throw new System.NotImplementedException();
+            settings = null;
+            if (configuration["sys:KJFramework.Net.Transaction"] == null) return false;
+            settings = JsonConvert.DeserializeObject<SettingConfiguration>(configuration["sys:KJFramework.Net.Transaction"]);
+            return true;
         }
 
         #endregion

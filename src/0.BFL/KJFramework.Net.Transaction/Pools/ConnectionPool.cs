@@ -22,7 +22,7 @@ namespace KJFramework.Net.Transaction.Pools
         ///    <para>* 使用此构造函数将会初始化一个最少1最大3个的连接池配置</para>
         /// </summary>
         protected ConnectionPool()
-            : this(Global.MinimumConnectionCount, Global.MaximumConnectionCount)
+            : this(TransactionGlobal.MinimumConnectionCount, TransactionGlobal.MaximumConnectionCount)
         {
 
         }

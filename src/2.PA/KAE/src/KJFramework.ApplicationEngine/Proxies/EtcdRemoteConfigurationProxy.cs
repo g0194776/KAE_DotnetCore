@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Net;
 using KJFramework.EventArgs;
+using KJFramework.Proxy;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

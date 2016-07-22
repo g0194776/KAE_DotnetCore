@@ -239,8 +239,9 @@ namespace KJFramework.Net
                 _channelKey = _socket.GetHashCode();
                 InitializeReceiver();
             }
-            catch
+            catch(System.Exception ex)
             {
+                Console.WriteLine(ex);
                 _connected = false;
                 _communicationState = CommunicationStates.Closed;
             }

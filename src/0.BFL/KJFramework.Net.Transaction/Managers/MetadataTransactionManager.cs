@@ -19,7 +19,7 @@ namespace KJFramework.Net.Transaction.Managers
         /// </summary>
         /// <param name="comparer">比较器</param>
         public MetadataTransactionManager(IEqualityComparer<TransactionIdentity> comparer)
-            : this(comparer, Global.TransactionCheckInterval)
+            : this(comparer, TransactionGlobal.TransactionCheckInterval)
         {
         }
 
@@ -56,7 +56,7 @@ namespace KJFramework.Net.Transaction.Managers
         public MetadataMessageTransaction Create(TransactionIdentity identity, IMessageTransportChannel<MetadataContainer> channel)
         {
             if (channel == null) throw new ArgumentNullException(nameof(channel));
-            MetadataMessageTransaction transaction = new MetadataMessageTransaction(new Lease(DateTime.Now.Add(Global.TransactionTimeout)), channel) { TransactionManager = this, Identity = identity };
+            MetadataMessageTransaction transaction = new MetadataMessageTransaction(new Lease(DateTime.Now.Add(TransactionGlobal.TransactionTimeout)), channel) { TransactionManager = this, Identity = identity };
             return (Add(identity, transaction) ? transaction : null);
         }
 

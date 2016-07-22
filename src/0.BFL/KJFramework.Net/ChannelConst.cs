@@ -73,7 +73,7 @@ namespace KJFramework.Net
         internal static void Initialize(ChannelInternalConfigSettings settings)
         {
             if (_initialized) return;
-            if (settings == null) throw new ArgumentNullException("settings");
+            if (settings == null) throw new ArgumentNullException(nameof(settings));
             //initializes global value.
             RecvBufferSize = settings.RecvBufferSize;
             BuffStubPoolSize = settings.BuffStubPoolSize;

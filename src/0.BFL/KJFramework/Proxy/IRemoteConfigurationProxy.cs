@@ -1,7 +1,7 @@
 ﻿using System;
 using KJFramework.EventArgs;
 
-namespace KJFramework.ApplicationEngine.Proxies
+namespace KJFramework.Proxy
 {
     /// <summary>
     ///     远程配置信息代理器元接口，提供了相关的基本操作

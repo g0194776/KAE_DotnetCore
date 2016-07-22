@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace KJFramework.Net.Configurations
 {
@@ -46,7 +47,10 @@ namespace KJFramework.Net.Configurations
         /// <returns>返回一个是否解析成功的标识</returns>
         public static bool TryParse(IConfiguration configuration, out ChannelInternalConfigSettings settings)
         {
-            throw new System.NotImplementedException();
+            settings = null;
+            if (configuration["sys:KJFramework.Net.Channels"] == null) return false;
+            settings = JsonConvert.DeserializeObject<ChannelInternalConfigSettings>(configuration["sys:KJFramework.Net.Channels"]);
+            return true;
         }
 
         #endregion
