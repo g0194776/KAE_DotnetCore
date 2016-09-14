@@ -9,7 +9,7 @@ namespace KJFramework.Configurations
     /// <summary>
     ///     KJFramework系统配置信息
     /// </summary>
-    internal static class SystemConfigurations
+    public static class SystemConfigurations
     {
         #region Members.
 
@@ -35,6 +35,20 @@ namespace KJFramework.Configurations
                 if (string.IsNullOrEmpty(configSection)) throw new KeyNotFoundException(string.Format("#Sadly, we cannot found \"{0}\" keyword in remote configuration node.", configKey));
                 configurations.Add(string.Format("sys:{0}", sysConfigKey), configSection);
             }
+            IConfigurationBuilder builder = new ConfigurationBuilder();
+            configurations.Add("IO:Tracing:Level", "0");
+            configurations.Add("IO:Tracing:Provider", "file");
+            configurations.Add("IO:Tracing:Datasource", ".");
+            builder.AddInMemoryCollection(configurations);
+            Configuration = builder.Build();
+        }
+
+        /// <summary>
+        ///     初始化
+        /// </summary>
+        public static void InitializeOnlyForLocal()
+        {
+            Dictionary<string, string> configurations = new Dictionary<string, string>();
             IConfigurationBuilder builder = new ConfigurationBuilder();
             configurations.Add("IO:Tracing:Level", "0");
             configurations.Add("IO:Tracing:Provider", "file");
