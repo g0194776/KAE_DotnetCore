@@ -46,13 +46,13 @@ namespace KJFramework.Configurations
         /// <summary>
         ///     初始化
         /// </summary>
-        public static void InitializeOnlyForLocal()
+        public static void InitializeOnlyForLocal(string logPath = ".")
         {
             Dictionary<string, string> configurations = new Dictionary<string, string>();
             IConfigurationBuilder builder = new ConfigurationBuilder();
             configurations.Add("IO:Tracing:Level", "0");
             configurations.Add("IO:Tracing:Provider", "file");
-            configurations.Add("IO:Tracing:Datasource", ".");
+            configurations.Add("IO:Tracing:Datasource", logPath);
             builder.AddInMemoryCollection(configurations);
             Configuration = builder.Build();
         }
